@@ -107,15 +107,15 @@ void getCc(const UndirectedGraph& g){
     cc = vector<int>(n,0); // Inicialitzem el vector de components conexes a 0
     vector<int> vertices = getVertices(g); //
     int nCc = 1; // Primera component conexa
-    while(!noCcLeft()){
-        int v;
-        for (int i = 0; i < vertices.size(); ++i){
-            v = vertices[i];
-            if (!visited[v]) break;
-        }
-        dfsCc(g,v,v,nCc);
-        ++nCc;
+    int v;
+    for (int i = 0; i < vertices.size(); ++i){
+        v = vertices[i];
+        if (!visited[v]) {
+            dfsCc(g,v,v,nCc);
+            ++nCc;
+        };
     }
+    
     printCc();
 }
 /* -------------------------------------------------- */
