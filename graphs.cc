@@ -251,70 +251,76 @@ int main(){
     int n;
     float p,r;
     string tria;
+    string sortir = "n";
 
     UndirectedGraph g;
 
-    do{
-        cout <<
-            "Quin graf vols crear? 1.Graella, 2.Binomial o 3.Geometric [1/2/3]"
-            << endl;
-        cin >> tria;
-        cout << "\nHas escrit: " << tria << endl;
-    }while( tria != "1" and tria != "2" and tria != "3" );
+    while (sortir == "n") {
+        do{
+            cout <<
+                "Quin graf vols crear? 1.Graella, 2.Binomial o 3.Geometric [1/2/3]: ";
+            cin >> tria;
+            cout << "\nHas escrit: " << tria << endl;
+        }while( tria != "1" and tria != "2" and tria != "3" );
 
-    cout << endl;
-    if(tria == "2"){
-        cout << "Entra el valor de n i p" << endl;
-        cin >> n >> p;
-        g = binomialGenerador(n,p);
-    } else if (tria == "3"){
-        cout << "Entra el valor de n i r" << endl;
-        cin >> n >> r;
-        g = geometricGenerador(n,r);
-    } else if (tria == "1"){
-        cout <<"Entra el valor de n" << endl;
-        cin >> n;
-        g = graellaGenerator(n);
+        cout << endl;
+        if(tria == "2"){
+            cout << "Entra el valor de n i p (natural i real): ";
+            cin >> n >> p;
+            g = binomialGenerador(n,p);
+        } else if (tria == "3"){
+            cout << "Entra el valor de n i r (natural i real): ";
+            cin >> n >> r;
+            g = geometricGenerador(n,r);
+        } else if (tria == "1"){
+            cout <<"Entra el valor de n (natural): ";
+            cin >> n;
+            g = graellaGenerator(n);
+        }
+        cout << endl;
+
+        bool isConnex;
+
+        // Prints del graf resultant
+        printEdges(g);
+        printVertices(g);
+        isConnex = getCc(g);
+        if (isConnex) cout << "El graf és connex!\n" << endl;
+        else cout << "El graf no és connex.\n" << endl;
+
+        float q = 0.05; // Factor de percolació
+        cout << "Introdueix el factor de percolació (real): ";
+        cin >> q;
+        cout << endl;
+
+        UndirectedGraph gNodePer = vertex_percolation(g, q);
+        // Prints del graf resultant amb percolació de nodes
+        cout << "##########################################" << endl;
+        cout << "Graf resultant de la percolació per nodes:" << endl;
+        cout << "##########################################" << endl;
+        printEdges(gNodePer);
+        printVertices(gNodePer);
+        isConnex = getCc(gNodePer);
+        if (isConnex) cout << "El graf és connex!" << endl;
+        else cout << "El graf no és connex." << endl;
+        cout << "##########################################\n" << endl;
+
+        UndirectedGraph gEdgePer = edge_percolation(g, q);
+        // Prints del graf resultant amb percolació d'arestes
+        cout << "############################################" << endl;
+        cout << "Graf resultant de la percolació per arestes:" << endl;
+        cout << "############################################" << endl;
+        printEdges(gEdgePer);
+        printVertices(gEdgePer);
+        isConnex = getCc(gEdgePer);
+        if (isConnex) cout << "El graf és connex!" << endl;
+        else cout << "El graf no és connex." << endl;
+        cout << "############################################\n" << endl;
+
+        cout << "Vols sortir i deixar de crear grafs? (s/n): ";
+        cin >> sortir;
+        cout << endl;
     }
-    cout << endl;
-
-    bool isConnex;
-
-    // Prints del graf resultant
-    printEdges(g);
-    printVertices(g);
-    isConnex = getCc(g);
-    if (isConnex) cout << "El graf és connex!\n" << endl;
-    else cout << "El graf no és connex.\n" << endl;
-
-    float q = 0.05; // Factor de percolació
-    cout << "Introdueix el factor de percolació: ";
-    cin >> q;
-    cout << endl;
-
-    UndirectedGraph gNodePer = vertex_percolation(g, q);
-    // Prints del graf resultant amb percolació de nodes
-    cout << "##########################################" << endl;
-    cout << "Graf resultant de la percolació per nodes:" << endl;
-    cout << "##########################################" << endl;
-    printEdges(gNodePer);
-    printVertices(gNodePer);
-    isConnex = getCc(gNodePer);
-    if (isConnex) cout << "El graf és connex!" << endl;
-    else cout << "El graf no és connex." << endl;
-    cout << "##########################################\n" << endl;
-
-    UndirectedGraph gEdgePer = edge_percolation(g, q);
-    // Prints del graf resultant amb percolació d'arestes
-    cout << "############################################" << endl;
-    cout << "Graf resultant de la percolació per arestes:" << endl;
-    cout << "############################################" << endl;
-    printEdges(gEdgePer);
-    printVertices(gEdgePer);
-    isConnex = getCc(gEdgePer);
-    if (isConnex) cout << "El graf és connex!" << endl;
-    else cout << "El graf no és connex." << endl;
-    cout << "############################################\n" << endl;
 
     return 0;
 }
