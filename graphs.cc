@@ -123,7 +123,10 @@ UndirectedGraph vertex_percolation(const UndirectedGraph& g, const double p){
     srand((unsigned)time( NULL )); // Random seed
     for (int i = 0; i < vertices.size(); ++i){
         double p1 = (double)(rand()) / ((double)RAND_MAX);
-        if (p1 <= p) boost::remove_vertex (i, g_per);
+        if (p1 <= p) {
+            boost::clear_vertex(i, g_per);
+            boost::remove_vertex(i, g_per);
+        }
     }
     return g_per;
 }
