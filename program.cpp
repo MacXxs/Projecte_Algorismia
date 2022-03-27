@@ -78,6 +78,12 @@ vector <bool> ccc(1); //Vector per saber si una component connexa és complexa i
 
        return dist;
    }
+   void printCCC(const vector<bool> ccc){
+    for (int i = 1; i < ccc.size(); ++i){
+        if(ccc[i]) cout << "La component conexa " << i << " es complexa" << endl;
+        else cout << "La component conexa " << i << " no es complexa" << endl;
+    }
+}
 
    void printCc(map<int,int>& cc){
        cout << "Connected components:\n";
@@ -118,6 +124,7 @@ vector <bool> ccc(1); //Vector per saber si una component connexa és complexa i
        int nCc = 1; // Primera component conexa
        int id;
        int cicles;
+       vector <bool> ccc(1); //Vector per saber si una component connexa és complexa inizialitzem la components conexa 0 ja que no la utilitzarem
        
 
        for (vertex_iterator it = vi; it != vi_end; ++it){
@@ -131,17 +138,13 @@ vector <bool> ccc(1); //Vector per saber si una component connexa és complexa i
            }
        }
 
-       printCc(cc);
+       //printCc(cc);
+       printCCC(ccc);
        return nCc <= 2;
    }
 
 
-   void printCCC(){
-    for (int i = 1; i < ccc.size(); ++i){
-        if(ccc[i]) cout << "La component conexa " << i << " es complexa" << endl;
-        else cout << "La component conexa " << i << " no es complexa" << endl;
-    }
-}
+   
 
 /* ---------------------------------------------------------- */
 
@@ -335,10 +338,8 @@ int main() {
     printEdges(g);
     isConnex = getCc(g);
     if (isConnex) cout << "El graf és connex!\n" << endl;
-    else {
-        cout << "El graf no és connex.\n" << endl;
-        printCCC();
-    }
+    else cout << "El graf no és connex.\n" << endl;
+    
 
     float q = 0.05; // Factor de percolació
     cout << "Introdueix el factor de percolació (real): ";
