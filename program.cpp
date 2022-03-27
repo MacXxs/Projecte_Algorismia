@@ -16,6 +16,7 @@ typedef boost::graph_traits<UndirectedGraph>::adjacency_iterator adjacency_itera
 
 //vector<bool> visited;
 //vector<int> cc;
+vector <bool> ccc(1); //Vector per saber si una component connexa és complexa inizialitzem la components conexa 0 ja que no la utilitzarem
 
 /* ----------------------------------------------------------
    --------------- GENERIC FUNCS & PROCS --------------------
@@ -88,7 +89,7 @@ typedef boost::graph_traits<UndirectedGraph>::adjacency_iterator adjacency_itera
 
    void dfsCc(const UndirectedGraph& g, const int& v,
               const int& father, const int& nCc,
-              map<int,bool>& visited, map<int,int>& cc){
+              map<int,bool>& visited, map<int,int>& cc, int& cicles){
        visited[v] = true;
        cc[v] = nCc;
        adjacency_iterator ai, ai_end;
@@ -96,8 +97,9 @@ typedef boost::graph_traits<UndirectedGraph>::adjacency_iterator adjacency_itera
        for (adjacency_iterator it = ai; it != ai_end; ++it){
            int id = g[*it].id;
            if (!visited[id]) {
-               dfsCc(g,id,v,nCc,visited,cc);
+               dfsCc(g,id,v,nCc,visited,cc, cicles);
            }
+           else if(id != father) ++cicles;
        }
    }
 
@@ -115,11 +117,16 @@ typedef boost::graph_traits<UndirectedGraph>::adjacency_iterator adjacency_itera
        }
        int nCc = 1; // Primera component conexa
        int id;
+       int cicles;
+       
 
        for (vertex_iterator it = vi; it != vi_end; ++it){
            id = g[*it].id;
            if (!visited[id]){
-               dfsCc(g,id,id,nCc,visited,cc);
+               cicles = 0;
+               dfsCc(g,id,id,nCc,visited,cc, cicles);
+               if(cicles > 1) ccc.push_back(false);
+               else ccc.push_back(true);
                ++nCc;
            }
        }
@@ -127,6 +134,14 @@ typedef boost::graph_traits<UndirectedGraph>::adjacency_iterator adjacency_itera
        printCc(cc);
        return nCc <= 2;
    }
+
+
+   void printCCC(){
+    for (int i = 1; i < ccc.size(); ++i){
+        if(ccc[i]) cout << "La component conexa " << i << " es complexa" << endl;
+        else cout << "La component conexa " << i << " no es complexa" << endl;
+    }
+}
 
 /* ---------------------------------------------------------- */
 
@@ -320,7 +335,10 @@ int main() {
     printEdges(g);
     isConnex = getCc(g);
     if (isConnex) cout << "El graf és connex!\n" << endl;
-    else cout << "El graf no és connex.\n" << endl;
+    else {
+        cout << "El graf no és connex.\n" << endl;
+        printCCC();
+    }
 
     float q = 0.05; // Factor de percolació
     cout << "Introdueix el factor de percolació (real): ";
