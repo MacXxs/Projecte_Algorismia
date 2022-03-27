@@ -4,7 +4,7 @@ echo "Tipus de graf: $1"
 echo "n: $2"
 echo "p: $3"
 echo "r: $4"
-echo "q: $3"
+echo "q: $5"
 
 for i in {1..5}
 do
