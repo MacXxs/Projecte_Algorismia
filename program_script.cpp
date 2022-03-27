@@ -151,9 +151,9 @@ typedef boost::graph_traits<UndirectedGraph>::adjacency_iterator adjacency_itera
        }
 
        //printCc(cc);
-       if (nCc <= 2) cout << "El graf es connex" << endl;
+       if (nCc == 2) cout << "El graf es connex" << endl;
        else cout << "El graf no és connex" << endl;
-       printCCC(ccc);
+       //printCCC(ccc);
        //return graphIsCCC(ccc);
        return nCc <= 2;
    }
